@@ -8,6 +8,9 @@ class TileMap(object):
         self._world_rect = pygame.Rect(0, 0, self._map.width * self._tilex, self._map.height * self._tiley)
         self._screen_rect = pygame.Rect(0, 0, screenwidth, screenheight)
 
+    def get_offset(self):
+        return self._screen_rect.topleft
+
     def set_offset(self, x, y):
         self._screen_rect.x = x
         self._screen_rect.y = y

@@ -8,8 +8,6 @@ class Game(object):
     TIMER_EVENT = pygame.USEREVENT + 1
     TARGET_FPS = 30
 
-    offset_test = 0
-    
     def __init__(self):
         pygame.init()
         self._screen = pygame.display.set_mode((self._width,self._height))
@@ -32,11 +30,23 @@ class Game(object):
         return True
 
     def _run_frame(self):
+        self._handle_input()
         self._screen.fill((255, 255, 255))
-        self._map.set_offset(0, self.offset_test)
         self._map.draw(self._screen)
         pygame.display.flip()
-        self.offset_test += 1
+
+    def _handle_input(self):
+        xoffset, yoffset = self._map.get_offset()
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
+            xoffset -= 1
+        if keys[pygame.K_RIGHT]:
+            xoffset += 1
+        if keys[pygame.K_UP]:
+            yoffset -= 1
+        if keys[pygame.K_DOWN]:
+            yoffset += 1
+        self._map.set_offset(xoffset, yoffset)
 
     def _shutdown(self):
         pygame.display.quit()
