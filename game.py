@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 import pygame
 from tilemap import *
+from character import *
+from enemy import *
 
 class Game(object):
     _width = 320
@@ -12,6 +14,8 @@ class Game(object):
         pygame.init()
         self._screen = pygame.display.set_mode((self._width,self._height))
         self._map = TileMap('test.tmx', self._width, self._height)
+        self._character = Character('character.tmx')
+        self._enemy = Enemy('character.tmx')
 
     def run(self):
         pygame.time.set_timer(self.TIMER_EVENT, 1000 / self.TARGET_FPS)
@@ -31,8 +35,15 @@ class Game(object):
 
     def _run_frame(self):
         self._handle_input()
+
+        # Update stuff.
+        self._enemy.update()
+
+        # Draw the screen.
         self._screen.fill((255, 255, 255))
         self._map.draw(self._screen)
+        self._character.draw(self._screen, self._map)
+        self._enemy.draw(self._screen, self._map)
         pygame.display.flip()
 
     def _handle_input(self):
