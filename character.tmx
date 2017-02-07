@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="4" height="1" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" name="characters" tilewidth="16" tileheight="16">
+  <image source="characters.png" width="192" height="128"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="4" height="1">
+  <data>
+   <tile gid="50"/>
+   <tile gid="74"/>
+   <tile gid="86"/>
+   <tile gid="62"/>
+  </data>
+ </layer>
+</map>
