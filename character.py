@@ -1,5 +1,6 @@
 import pytmx, pygame
 from pytmx.util_pygame import load_pygame
+from animator import *
 
 class Character(object):
     def __init__(self, filename):
@@ -8,6 +9,9 @@ class Character(object):
 
         # Start the character at (0,0).
         self._rect = pygame.Rect(0, 0, self._sprites.tilewidth, self._sprites.tileheight)
+
+    def update(self, time):
+        animate_tilemap(self._sprites, time)
         
     def draw(self, screen, tilemap):
         # Get the first sprite from the tilemap.

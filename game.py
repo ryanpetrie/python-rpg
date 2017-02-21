@@ -37,7 +37,9 @@ class Game(object):
         self._handle_input()
 
         # Update stuff.
-        self._enemy.update()
+        # TODO: change the 33 to actual milliseconds from the last frame.
+        self._character.update(33)
+        self._enemy.update(33)
 
         # Draw the screen.
         self._screen.fill((255, 255, 255))

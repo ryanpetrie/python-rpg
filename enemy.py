@@ -1,11 +1,12 @@
 from character import *
 from random import randint
 
-class Enemy(Character): #yay!
+class Enemy(Character):
     _steps_left = 0
     _direction = -1
     
-    def update(self):
+    def update(self, time):
+        Character.update(self, time)
         if self._steps_left <= 0:
             self._steps_left = randint(10, 30)
             #self._direction = randint(0, 3)
