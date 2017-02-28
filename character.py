@@ -3,6 +3,8 @@ from pytmx.util_pygame import load_pygame
 from animator import *
 
 class Character(object):
+    _facing = 0
+    
     def __init__(self, filename):
         # Load the character's sprites from the tile map.
         self._sprites = load_pygame(filename)
@@ -14,8 +16,8 @@ class Character(object):
         animate_tilemap(self._sprites, time)
         
     def draw(self, screen, tilemap):
-        # Get the first sprite from the tilemap.
-        surface = self._sprites.get_tile_image(0, 0, 0)
+        # Get the animated surface.
+        surface = get_animated_tile_image(self._sprites, self._facing, 0, 0)
 
         # Offset the rect by the map's offset.
         xoffset, yoffset = tilemap.get_offset()

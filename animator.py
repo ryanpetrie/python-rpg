@@ -1,6 +1,6 @@
 import pytmx
 
-def _animate_properties(tilemap, time):
+def animate_tilemap(tilemap, time):
     # Animate each tile property dictionary.
     for gid, props in tilemap.tile_properties.iteritems():
         # If there is no animation data, skip this tile.
@@ -27,29 +27,14 @@ def _animate_properties(tilemap, time):
             props['current_frame'] = (props['current_frame'] + 1) % len(frames)
             current_frame_duration = frames[props['current_frame']].duration
             
-        
-def _animate_tile_data(tilemap):
-    # For each layer:
-    for layer_number in xrange(len(tilemap.layers)):
-        layer = tilemap.layers[layer_number]
 
-        # For each tile in the layer:
-        for x, y, gid in layer:
-            props = tilemap.get_tile_properties(x, y, layer_number)
-            # If there is no animation data, skip this tile.
-            if 'frames' not in props or len(props['frames']) < 2:
-                continue
+def get_animated_tile_image(tilemap, x, y, layer):
+    props = tilemap.get_tile_properties(x, y, layer)
+    # If there is no animation data, return get_tile_image.
+    if 'frames' not in props or len(props['frames']) < 2:
+        return tilemap.get_tile_image(x, y, layer)
 
-            # Get the gid for the current frame.
-            frames = props['frames']
-            frame = frames[props['current_frame']]
-            gid = frame.gid
-
-            # Set the tile data using the gid.
-            # TODO: This will break get_tile_properties!
-            layer.data[y][x] = gid
-            
-
-def animate_tilemap(tilemap, time):
-    _animate_properties(tilemap, time)
-    _animate_tile_data(tilemap)
+    # Get the gid for the current frame.
+    frames = props['frames']
+    frame = frames[props['current_frame']]
+    return tilemap.images[frame.gid]
