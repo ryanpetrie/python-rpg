@@ -12,7 +12,8 @@ class Game(object):
 
     def __init__(self):
         pygame.init()
-        self._screen = pygame.display.set_mode((self._width,self._height))
+        self._screen = pygame.display.set_mode((self._width*2, self._height*2))
+        self._canvas = pygame.Surface((self._width, self._height), 0, self._screen)
         self._map = TileMap('test.tmx', self._width, self._height)
         self._character = Character('character.tmx')
         self._enemy = Enemy('character.tmx')
@@ -43,26 +44,34 @@ class Game(object):
         self._enemy.update(frame_time)
 
         # Draw the screen.
-        self._screen.fill((255, 255, 255))
-        self._map.draw(self._screen)
-        self._character.draw(self._screen, self._map)
-        self._enemy.draw(self._screen, self._map)
+        self._canvas.fill((255, 255, 255))
+        self._map.draw(self._canvas)
+        self._character.draw(self._canvas, self._map)
+        self._enemy.draw(self._canvas, self._map)
+        pygame.transform.scale2x(self._canvas, self._screen)
         pygame.display.flip()
 
     def _handle_input(self):
-        xpos, ypos = self._character.get_position()
+        speed = self._character.speed
+        facing = FACING_DOWN
+        rect = self._character.get_rect()
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
-            xpos -= 1
+            facing = FACING_LEFT
+            rect.x -= speed
         if keys[pygame.K_RIGHT]:
-            xpos += 1
+            facing = FACING_RIGHT
+            rect.x += speed
         if keys[pygame.K_UP]:
-            ypos -= 1
+            facing = FACING_UP
+            rect.y -= speed
         if keys[pygame.K_DOWN]:
-            ypos += 1
-        rect = pygame.Rect(xpos, ypos, 16, 16)
+            facing = FACING_DOWN
+            rect.y += speed
         if not self._map.collides(rect):
-            self._character.set_position(xpos, ypos)
+            self._character.set_position(rect.x, rect.y)
+            self._character.set_facing(facing)
+            self._map.set_center(rect.centerx, rect.centery)
 
     def _shutdown(self):
         pygame.display.quit()

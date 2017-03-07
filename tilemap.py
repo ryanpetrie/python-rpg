@@ -25,6 +25,11 @@ class TileMap(object):
         # Clamp the screen rect to the world rect.
         self._screen_rect.clamp_ip(self._world_rect)
 
+    def set_center(self, x, y):
+        self._screen_rect.center = (x, y)
+        # Clamp the screen rect to the world rect.
+        self._screen_rect.clamp_ip(self._world_rect)
+
     def draw(self, screen):
         # Draw each tile.
         for layer in self._map.layers:
@@ -42,6 +47,10 @@ class TileMap(object):
         screen.blit(surface, myrect)
 
     def collides(self, rect):
+        if not self._world_rect.contains(rect):
+            # rect is outside the world boundaries.
+            return True
+        
         # Determine the tile bounds of the rect.
         firstx = rect.left / self._tilex
         firsty = rect.top / self._tiley

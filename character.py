@@ -2,8 +2,14 @@ import pytmx, pygame
 from pytmx.util_pygame import load_pygame
 from animator import *
 
+FACING_DOWN = 0
+FACING_RIGHT = 1
+FACING_UP = 2
+FACING_LEFT = 3
+
 class Character(object):
     _facing = 0
+    speed = 4
     
     def __init__(self, filename):
         # Load the character's sprites from the tile map.
@@ -34,3 +40,10 @@ class Character(object):
         # Set the character's top-left corner.
         self._rect.x = x
         self._rect.y = y
+
+    def get_rect(self): # NOOB
+        return self._rect.copy()
+
+    def set_facing(self, direction):
+        self._facing = direction
+
