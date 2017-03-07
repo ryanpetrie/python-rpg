@@ -16,6 +16,7 @@ class Game(object):
         self._map = TileMap('test.tmx', self._width, self._height)
         self._character = Character('character.tmx')
         self._enemy = Enemy('character.tmx')
+        self._clock = pygame.time.Clock()
 
     def run(self):
         pygame.time.set_timer(self.TIMER_EVENT, 1000 / self.TARGET_FPS)
@@ -34,12 +35,12 @@ class Game(object):
         return True
 
     def _run_frame(self):
+        frame_time = self._clock.tick()
         self._handle_input()
 
         # Update stuff.
-        # TODO: change the 33 to actual milliseconds from the last frame.
-        self._character.update(33)
-        self._enemy.update(33)
+        self._character.update(frame_time)
+        self._enemy.update(frame_time)
 
         # Draw the screen.
         self._screen.fill((255, 255, 255))
@@ -49,17 +50,19 @@ class Game(object):
         pygame.display.flip()
 
     def _handle_input(self):
-        xoffset, yoffset = self._map.get_offset()
+        xpos, ypos = self._character.get_position()
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
-            xoffset -= 1
+            xpos -= 1
         if keys[pygame.K_RIGHT]:
-            xoffset += 1
+            xpos += 1
         if keys[pygame.K_UP]:
-            yoffset -= 1
+            ypos -= 1
         if keys[pygame.K_DOWN]:
-            yoffset += 1
-        self._map.set_offset(xoffset, yoffset)
+            ypos += 1
+        rect = pygame.Rect(xpos, ypos, 16, 16)
+        if not self._map.collides(rect):
+            self._character.set_position(xpos, ypos)
 
     def _shutdown(self):
         pygame.display.quit()
