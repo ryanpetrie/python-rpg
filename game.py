@@ -3,6 +3,7 @@ import pygame
 from tilemap import *
 from character import *
 from enemy import *
+from player import *
 
 class Game(object):
     _width = 320
@@ -15,8 +16,8 @@ class Game(object):
         self._screen = pygame.display.set_mode((self._width*2, self._height*2))
         self._canvas = pygame.Surface((self._width, self._height), 0, self._screen)
         self._map = TileMap('test.tmx', self._width, self._height)
-        self._character = Character('character.tmx')
-        self._enemy = Enemy('character.tmx')
+        self._player = Player('character.tmx', self)
+        self._enemies = [Enemy('character.tmx', self), Enemy('character.tmx', self)]
         self._clock = pygame.time.Clock()
 
     def run(self):
@@ -26,6 +27,9 @@ class Game(object):
             if not ok:
                 break
         self._shutdown()
+
+    def get_player(self):
+        return self._player
 
     def _process_events(self):
         event = pygame.event.poll()
@@ -40,37 +44,33 @@ class Game(object):
         self._handle_input()
 
         # Update stuff.
-        self._character.update(frame_time)
-        self._enemy.update(frame_time)
+        self._player.update(frame_time)
+        for enemy in self._enemies:
+            enemy.update(frame_time)
 
         # Draw the screen.
         self._canvas.fill((255, 255, 255))
         self._map.draw(self._canvas)
-        self._character.draw(self._canvas, self._map)
-        self._enemy.draw(self._canvas, self._map)
+        self._player.draw(self._canvas, self._map)
+        for enemy in self._enemies:
+            enemy.draw(self._canvas, self._map)
         pygame.transform.scale2x(self._canvas, self._screen)
         pygame.display.flip()
 
     def _handle_input(self):
-        speed = self._character.speed
-        facing = FACING_DOWN
-        rect = self._character.get_rect()
+        speed = self._player.speed
+        x, y = 0, 0
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
-            facing = FACING_LEFT
-            rect.x -= speed
+            x -= speed
         if keys[pygame.K_RIGHT]:
-            facing = FACING_RIGHT
-            rect.x += speed
+            x += speed
         if keys[pygame.K_UP]:
-            facing = FACING_UP
-            rect.y -= speed
+            y -= speed
         if keys[pygame.K_DOWN]:
-            facing = FACING_DOWN
-            rect.y += speed
-        if not self._map.collides(rect):
-            self._character.set_position(rect.x, rect.y)
-            self._character.set_facing(facing)
+            y += speed
+        if self._player.move(self._map, x, y):
+            rect = self._player.get_rect()
             self._map.set_center(rect.centerx, rect.centery)
 
     def _shutdown(self):

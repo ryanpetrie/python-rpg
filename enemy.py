@@ -24,3 +24,6 @@ class Enemy(Character):
             x -= 1
         self.set_position(x, y)
         self._steps_left -= 1
+
+    def hit(self):
+        print "OWWWW I got hit"

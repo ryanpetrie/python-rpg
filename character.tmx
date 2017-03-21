@@ -35,12 +35,20 @@
    </animation>
   </tile>
  </tileset>
- <layer name="Tile Layer 1" width="4" height="1">
+ <layer name="Character" width="4" height="1">
   <data>
    <tile gid="5"/>
    <tile gid="29"/>
    <tile gid="41"/>
    <tile gid="17"/>
+  </data>
+ </layer>
+ <layer name="Weapon" width="4" height="1">
+  <data>
+   <tile gid="59"/>
+   <tile gid="83"/>
+   <tile gid="95"/>
+   <tile gid="71"/>
   </data>
  </layer>
 </map>

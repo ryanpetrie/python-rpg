@@ -7,16 +7,22 @@ FACING_RIGHT = 1
 FACING_UP = 2
 FACING_LEFT = 3
 
+FACING_DIRECTIONS = [(0, +1), (+1, 0), (0, -1), (-1, 0)]
+
+
 class Character(object):
     _facing = 0
     speed = 4
     
-    def __init__(self, filename):
+    def __init__(self, filename, game):
         # Load the character's sprites from the tile map.
         self._sprites = load_pygame(filename)
 
         # Start the character at (0,0).
         self._rect = pygame.Rect(0, 0, self._sprites.tilewidth, self._sprites.tileheight)
+
+        # Save the game object.
+        self._game = game
 
     def update(self, time):
         animate_tilemap(self._sprites, time)
@@ -46,4 +52,22 @@ class Character(object):
 
     def set_facing(self, direction):
         self._facing = direction
+
+    def move(self, tilemap, rel_x, rel_y):
+        new_rect = self._rect.move(rel_x, rel_y)
+        if tilemap.collides(new_rect):
+            return False
+        # If we get here, there are no collisions. 
+        self._rect = new_rect
+        if rel_x < 0:
+            self._facing = FACING_LEFT
+        if rel_x > 0:
+            self._facing = FACING_RIGHT
+        if rel_y < 0:
+            self._facing = FACING_UP
+        if rel_y > 0:
+            self._facing = FACING_DOWN
+        return True
+            
+        
 
