@@ -69,6 +69,8 @@ class Game(object):
             y -= speed
         if keys[pygame.K_DOWN]:
             y += speed
+        if keys[pygame.K_SPACE]:
+            self._player.attack(self._enemies)
         if self._player.move(self._map, x, y):
             rect = self._player.get_rect()
             self._map.set_center(rect.centerx, rect.centery)

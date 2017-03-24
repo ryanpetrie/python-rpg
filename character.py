@@ -53,6 +53,9 @@ class Character(object):
     def set_facing(self, direction):
         self._facing = direction
 
+    def get_facing(self):
+        return self._facing
+
     def move(self, tilemap, rel_x, rel_y):
         new_rect = self._rect.move(rel_x, rel_y)
         if tilemap.collides(new_rect):
