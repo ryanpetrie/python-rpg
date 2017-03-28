@@ -9,6 +9,7 @@ FACING_LEFT = 3
 
 FACING_DIRECTIONS = [(0, +1), (+1, 0), (0, -1), (-1, 0)]
 
+CHARACTER_LAYER = 0
 
 class Character(object):
     _facing = 0
@@ -29,7 +30,7 @@ class Character(object):
         
     def draw(self, screen, tilemap):
         # Get the animated surface.
-        surface = get_animated_tile_image(self._sprites, self._facing, 0, 0)
+        surface = get_animated_tile_image(self._sprites, self._facing, 0, CHARACTER_LAYER)
 
         # Offset the rect by the map's offset.
         xoffset, yoffset = tilemap.get_offset()
