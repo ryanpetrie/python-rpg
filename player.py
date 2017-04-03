@@ -44,7 +44,10 @@ class Player(Character):
         self._last_attack_time = pygame.time.get_ticks()
 
     def hit(self):
+        if self.is_invul():
+            return
         print "I'm the player don't hit me"
+        self.go_invul()        
 
     def move(self, tilemap, rel_x, rel_y):
         if self.is_in_attack():

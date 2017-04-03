@@ -10,10 +10,14 @@ FACING_LEFT = 3
 FACING_DIRECTIONS = [(0, +1), (+1, 0), (0, -1), (-1, 0)]
 
 CHARACTER_LAYER = 0
+BLINK_TIME = 100
 
 class Character(object):
     _facing = 0
     speed = 4
+
+    invul_time = 1000
+    _last_invul_time = 0
     
     def __init__(self, filename, game):
         # Load the character's sprites from the tile map.
@@ -36,8 +40,23 @@ class Character(object):
         xoffset, yoffset = tilemap.get_offset()
         myrect = self._rect.move(-xoffset, -yoffset)
 
+        # Blink when invulnerable.
+        if self.is_invul():
+            ticks = pygame.time.get_ticks()
+            intervals = ticks / BLINK_TIME
+            if intervals % 2 == 0:
+                return
+
         # Draw it.
         screen.blit(surface, myrect)
+
+    def is_invul(self):
+        time = pygame.time.get_ticks()
+        elapsed_time = time - self._last_invul_time
+        return elapsed_time < self.invul_time
+
+    def go_invul(self):
+        self._last_invul_time = pygame.time.get_ticks()
 
     def get_position(self):
         # Return the (x,y) position of the character.
