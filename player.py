@@ -1,5 +1,6 @@
 import pygame
 from character import *
+from animator import *
 
 WEAPON_LAYER = 1
 
@@ -14,7 +15,8 @@ class Player(Character):
         if self.is_in_attack():
             offsetx, offsety = tilemap.get_offset()
             rect = self._attack_rect.move(-offsetx, -offsety)
-            sprite = self._sprites.get_tile_image(self.get_facing(), 0, WEAPON_LAYER)
+            sprite = get_animated_tile_image(self._sprites, self.get_facing(), 0, WEAPON_LAYER, self._update_time)
+            #self._sprites.get_tile_image(self.get_facing(), 0, WEAPON_LAYER)
             screen.blit(sprite, rect)
 
     def is_in_attack(self):
@@ -42,6 +44,10 @@ class Player(Character):
 
         # Update our last attack time.
         self._last_attack_time = pygame.time.get_ticks()
+
+        # Reset attack animation.
+        props = self._sprites.get_tile_properties(self.get_facing(), 0, WEAPON_LAYER)
+        reset_animation(props)
 
     def hit(self):
         if self.is_invul():

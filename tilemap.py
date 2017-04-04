@@ -1,8 +1,9 @@
 import pytmx, pygame
 from pytmx.util_pygame import load_pygame
+from spawner import *
 
 class TileMap(object):
-    def __init__(self, filename, screenwidth, screenheight):
+    def __init__(self, filename, screenwidth, screenheight, game):
         # Load the tile data from the file.
         self._map = load_pygame(filename)
 
@@ -15,6 +16,20 @@ class TileMap(object):
 
         # Create a test font.
         self._font = pygame.font.SysFont(None, 25)
+
+        self._objects = []
+        self._create_special_objects(game)
+
+    def _create_special_objects(self, game):
+        for layer in xrange(len(self._map.layers)):
+            for y in xrange(layer.height):
+                for x in xrange(layer.width):
+                    props = self._map.get_tile_properties(x, y, layer)
+                    if props and 'Spawner' in props:
+                        rect = pygame.Rect(0, 0, 0, 0)  # TODO: make the actual rect
+                        spawner = Spawner(rect, game)
+                        self._objects.append(spawner)
+
 
     def get_offset(self):
         return self._screen_rect.topleft

@@ -35,6 +35,23 @@
    </animation>
   </tile>
  </tileset>
+ <tileset firstgid="97" name="bad-stick" tilewidth="16" tileheight="16">
+  <image source="bad-stick.png" width="64" height="16"/>
+  <tile id="0">
+   <animation>
+    <frame tileid="1" duration="150"/>
+    <frame tileid="0" duration="150"/>
+    <frame tileid="3" duration="200"/>
+   </animation>
+  </tile>
+  <tile id="2">
+   <animation>
+    <frame tileid="1" duration="100"/>
+    <frame tileid="2" duration="100"/>
+    <frame tileid="3" duration="300"/>
+   </animation>
+  </tile>
+ </tileset>
  <layer name="Character" width="4" height="1">
   <data>
    <tile gid="5"/>
@@ -45,10 +62,10 @@
  </layer>
  <layer name="Weapon" width="4" height="1">
   <data>
-   <tile gid="59"/>
-   <tile gid="83"/>
-   <tile gid="95"/>
-   <tile gid="71"/>
+   <tile gid="97"/>
+   <tile gid="99"/>
+   <tile gid="97"/>
+   <tile gid="99"/>
   </data>
  </layer>
 </map>

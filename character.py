@@ -18,6 +18,7 @@ class Character(object):
 
     invul_time = 1000
     _last_invul_time = 0
+    _update_time = 0
     
     def __init__(self, filename, game):
         # Load the character's sprites from the tile map.
@@ -30,11 +31,12 @@ class Character(object):
         self._game = game
 
     def update(self, time):
-        animate_tilemap(self._sprites, time)
-        
+        # Remember the update time for later.
+        self._update_time = time
+
     def draw(self, screen, tilemap):
         # Get the animated surface.
-        surface = get_animated_tile_image(self._sprites, self._facing, 0, CHARACTER_LAYER)
+        surface = get_animated_tile_image(self._sprites, self._facing, 0, CHARACTER_LAYER, self._update_time)
 
         # Offset the rect by the map's offset.
         xoffset, yoffset = tilemap.get_offset()
