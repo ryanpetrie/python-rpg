@@ -21,12 +21,16 @@ class TileMap(object):
         self._create_special_objects(game)
 
     def _create_special_objects(self, game):
-        for layer in xrange(len(self._map.layers)):
+        # Loop through every tile to see if we should create something.
+        for layer_number in xrange(len(self._map.layers)):
+            # Get the layer object so we can use its properties.
+            layer = self._map.layers[layer_number]
             for y in xrange(layer.height):
                 for x in xrange(layer.width):
-                    props = self._map.get_tile_properties(x, y, layer)
+                    # Get the tile properties
+                    props = self._map.get_tile_properties(x, y, layer_number)
                     if props and 'Spawner' in props:
-                        rect = pygame.Rect(0, 0, 0, 0)  # TODO: make the actual rect
+                        rect = pygame.Rect(x * self._tilex, y * self._tiley, self._tilex, self._tiley)
                         spawner = Spawner(rect, game)
                         self._objects.append(spawner)
 

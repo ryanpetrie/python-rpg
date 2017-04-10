@@ -15,7 +15,7 @@ class Game(object):
         pygame.init()
         self._screen = pygame.display.set_mode((self._width*2, self._height*2))
         self._canvas = pygame.Surface((self._width, self._height), 0, self._screen)
-        self._map = TileMap('test.tmx', self._width, self._height)
+        self._map = TileMap('test.tmx', self._width, self._height, self)
         self._player = Player('character.tmx', self)
         self._enemies = [Enemy('character.tmx', self), Enemy('character.tmx', self)]
         self._clock = pygame.time.Clock()

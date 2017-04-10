@@ -1,6 +1,7 @@
 import pytmx, pygame
 from pytmx.util_pygame import load_pygame
 from animator import *
+from timed_event import *
 
 FACING_DOWN = 0
 FACING_RIGHT = 1
@@ -16,8 +17,6 @@ class Character(object):
     _facing = 0
     speed = 4
 
-    invul_time = 1000
-    _last_invul_time = 0
     _update_time = 0
     
     def __init__(self, filename, game):
@@ -29,6 +28,10 @@ class Character(object):
 
         # Save the game object.
         self._game = game
+
+        # Create a TimedEvent for invulnerability.
+        self._invul_event = TimedEvent(1000)
+        
 
     def update(self, time):
         # Remember the update time for later.
@@ -53,12 +56,10 @@ class Character(object):
         screen.blit(surface, myrect)
 
     def is_invul(self):
-        time = pygame.time.get_ticks()
-        elapsed_time = time - self._last_invul_time
-        return elapsed_time < self.invul_time
+        return self._invul_event.is_active()
 
     def go_invul(self):
-        self._last_invul_time = pygame.time.get_ticks()
+        self._invul_event.trigger()
 
     def get_position(self):
         # Return the (x,y) position of the character.

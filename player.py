@@ -1,13 +1,13 @@
 import pygame
 from character import *
 from animator import *
+from timed_event import *
 
 WEAPON_LAYER = 1
 
 class Player(Character):
 
-    attack_delay = 500
-    _last_attack_time = 0
+    _attack_event = TimedEvent(500)
     _attack_rect = pygame.Rect(0, 0, 0, 0)
 
     def draw(self, screen, tilemap):
@@ -20,9 +20,7 @@ class Player(Character):
             screen.blit(sprite, rect)
 
     def is_in_attack(self):
-        time = pygame.time.get_ticks()
-        elapsed_time = time - self._last_attack_time
-        return elapsed_time < self.attack_delay
+        return self._attack_event.is_active()
         
     def attack(self, enemies):
         # Has enough time passed since the last attack?
@@ -43,7 +41,7 @@ class Player(Character):
                 enemy.hit()
 
         # Update our last attack time.
-        self._last_attack_time = pygame.time.get_ticks()
+        self._attack_event.trigger()
 
         # Reset attack animation.
         props = self._sprites.get_tile_properties(self.get_facing(), 0, WEAPON_LAYER)
