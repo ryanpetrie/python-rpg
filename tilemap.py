@@ -86,3 +86,7 @@ class TileMap(object):
 
         # If no collision was found, the rect does not collide.
         return False
+
+    def update(self, time):
+        for obj in self._objects:
+            obj.update(time)

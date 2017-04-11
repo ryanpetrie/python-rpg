@@ -13,11 +13,11 @@ class Game(object):
 
     def __init__(self):
         pygame.init()
+        self.enemies = []
         self._screen = pygame.display.set_mode((self._width*2, self._height*2))
         self._canvas = pygame.Surface((self._width, self._height), 0, self._screen)
         self._map = TileMap('test.tmx', self._width, self._height, self)
         self._player = Player('character.tmx', self)
-        self._enemies = [Enemy('character.tmx', self), Enemy('character.tmx', self)]
         self._clock = pygame.time.Clock()
 
     def run(self):
@@ -44,15 +44,16 @@ class Game(object):
         self._handle_input()
 
         # Update stuff.
+        self._map.update(frame_time)
         self._player.update(frame_time)
-        for enemy in self._enemies:
+        for enemy in self.enemies:
             enemy.update(frame_time)
 
         # Draw the screen.
         self._canvas.fill((255, 255, 255))
         self._map.draw(self._canvas)
         self._player.draw(self._canvas, self._map)
-        for enemy in self._enemies:
+        for enemy in self.enemies:
             enemy.draw(self._canvas, self._map)
         pygame.transform.scale2x(self._canvas, self._screen)
         pygame.display.flip()
@@ -70,7 +71,7 @@ class Game(object):
         if keys[pygame.K_DOWN]:
             y += speed
         if keys[pygame.K_SPACE]:
-            self._player.attack(self._enemies)
+            self._player.attack(self.enemies)
         if self._player.move(self._map, x, y):
             rect = self._player.get_rect()
             self._map.set_center(rect.centerx, rect.centery)
