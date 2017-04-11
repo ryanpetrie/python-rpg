@@ -4,6 +4,7 @@ from tilemap import *
 from character import *
 from enemy import *
 from player import *
+from gui import *
 
 class Game(object):
     _width = 320
@@ -19,6 +20,7 @@ class Game(object):
         self._map = TileMap('test.tmx', self._width, self._height, self)
         self._player = Player('character.tmx', self)
         self._clock = pygame.time.Clock()
+        self._gui = Gooey('gui.tmx')
 
     def run(self):
         pygame.time.set_timer(self.TIMER_EVENT, 1000 / self.TARGET_FPS)
@@ -55,6 +57,7 @@ class Game(object):
         self._player.draw(self._canvas, self._map)
         for enemy in self.enemies:
             enemy.draw(self._canvas, self._map)
+        self._gui.draw_box(self._canvas, pygame.Rect(0, 0, 128, 48))  # THIS IS ONLY A TEST
         pygame.transform.scale2x(self._canvas, self._screen)
         pygame.display.flip()
 
