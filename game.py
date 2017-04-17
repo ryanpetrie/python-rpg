@@ -81,6 +81,9 @@ class Game(object):
 
     def _shutdown(self):
         pygame.display.quit()
-
+	
+	def get_player(self):
+		return self._player
+		
 game = Game()
 game.run()
