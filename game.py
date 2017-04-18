@@ -57,7 +57,7 @@ class Game(object):
         self._player.draw(self._canvas, self._map)
         for enemy in self.enemies:
             enemy.draw(self._canvas, self._map)
-        self._gui.draw_box(self._canvas, pygame.Rect(0, 0, 128, 48))  # THIS IS ONLY A TEST
+        self._gui.text_box(self._canvas, pygame.Rect(0, 0, 128, 48), "Hello world!")  # THIS IS ONLY A TEST
         pygame.transform.scale2x(self._canvas, self._screen)
         pygame.display.flip()
 
@@ -82,8 +82,8 @@ class Game(object):
     def _shutdown(self):
         pygame.display.quit()
 	
-	def get_player(self):
-		return self._player
+    def get_player(self):
+        return self._player
 		
 game = Game()
 game.run()

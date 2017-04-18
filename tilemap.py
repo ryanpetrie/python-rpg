@@ -14,9 +14,6 @@ class TileMap(object):
         self._world_rect = pygame.Rect(0, 0, self._map.width * self._tilex, self._map.height * self._tiley)
         self._screen_rect = pygame.Rect(0, 0, screenwidth, screenheight)
 
-        # Create a test font.
-        self._font = pygame.font.SysFont(None, 25)
-
         self._objects = []
         self._create_special_objects(game)
 
@@ -57,13 +54,6 @@ class TileMap(object):
                 top = y * self._tiley - self._screen_rect.y
                 myrect = pygame.Rect(left, top, self._tilex, self._tiley)
                 screen.blit(image, myrect)
-                
-        # Draw a test message.
-        xoffset, yoffset = self.get_offset()
-        message = "Offset: " + str(xoffset) + ", " + str(yoffset)
-        surface = self._font.render(message, True, (15, 0, 255))
-        myrect = pygame.Rect(0, 0, surface.get_width(), surface.get_height())
-        screen.blit(surface, myrect)
 
     def collides(self, rect):
         if not self._world_rect.contains(rect):

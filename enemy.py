@@ -5,8 +5,8 @@ class Enemy(Character):
     _steps_left = 0
     _direction = -1
 
-	def update(self, time):
-		Character.update(self, time)
+    def update(self, time):
+        Character.update(self, time)
 
     def hit(self):
         print "OWWWW I got hit"
