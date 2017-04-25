@@ -57,7 +57,11 @@ class Game(object):
         self._player.draw(self._canvas, self._map)
         for enemy in self.enemies:
             enemy.draw(self._canvas, self._map)
-        self._gui.text_box(self._canvas, pygame.Rect(0, 0, 128, 48), "Hello world!")  # THIS IS ONLY A TEST
+        self._gui.text_box(self._canvas,
+                           pygame.Rect(0, 0, 128, 48),
+                           ["Hello world!","This is a test.","This is ONLY a test."],
+                           color=(255, 200, 200),
+                           size=16)  # THIS IS ONLY A TEST
         pygame.transform.scale2x(self._canvas, self._screen)
         pygame.display.flip()
 

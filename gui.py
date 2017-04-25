@@ -14,8 +14,9 @@ class Gooey(object):
         self._tilex = self._tiles.tilewidth
         self._tiley = self._tiles.tileheight
 
-        # Create a font.
-        self._font = pygame.font.SysFont(None, 25)
+        # Create a font cache.
+        self._font_cache = {}
+        
 
 
     def draw_box(self, surface, rect):
@@ -54,12 +55,39 @@ class Gooey(object):
                 tile = self._tiles.get_tile_image(xedge, yedge, 0)
                 surface.blit(tile, tile_rect)
                     
-    def text_box(self, surface, rect, text, color = (255, 255, 255)):
-        self.draw_box(surface, rect)
-        text_surface = self._font.render(text, True, color)
-        rect = rect.inflate(-self.BORDER_SIZE, -self.BORDER_SIZE)
-        surface.blit(text_surface, rect)
+    def text_box(self, surface, rect, text_list, **kwargs):
+        # Handle the keyword arguments.
+        if not kwargs: kwargs = {}
+        color = kwargs.get('color', (255, 255, 255))
+        size = kwargs.get('size', 25)
         
-                    
+        # Draw the box first.
+        self.draw_box(surface, rect)
+        # Shrink the rendering rect for the border.
+        rect = rect.inflate(-self.BORDER_SIZE, -self.BORDER_SIZE)
+        # Get the text to render.
+        font = self.get_font(size)
+        for text in text_list:
+            text_surface = font.render(text, True, color)
+            text_rect = text_surface.get_rect() # noob
+            # Make sure the text fits.
+            if rect.width < text_rect.width:
+                text_rect.width = rect.width
+            if rect.height < text_rect.height:
+                text_rect.height = rect.height
+            text_surface = text_surface.subsurface(text_rect)
+            # Render the text.
+            surface.blit(text_surface, rect)
+            # Shrink the rect for the next line.
+            rect.height -= font.get_linesize()
+            rect.y += font.get_linesize()
+        
+    def get_font(self, size):
+        if size in self._font_cache:
+            return self._font_cache[size]
+        # Font was not in the cache. Make a new one.
+        font = pygame.font.SysFont(None, size)
+        self._font_cache[size] = font
+        return font
                         
         
