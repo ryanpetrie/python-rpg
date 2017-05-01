@@ -1,5 +1,6 @@
 from timed_event import *
 from wander_enemy import *
+from chaser_enemy import *
 
 class Spawner(object):
 
@@ -17,7 +18,7 @@ class Spawner(object):
         self._spawn_timer.trigger()
 
         # Create the new enemy.
-        new_enemy = WanderEnemy('character.tmx', self._game)
+        new_enemy = ChaserEnemy('character.tmx', self._game)
         new_enemy.set_position(self._rect.center[0], self._rect.center[1])
 
         # Add it to the enemy list.

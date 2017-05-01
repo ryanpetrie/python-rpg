@@ -88,6 +88,9 @@ class Game(object):
 	
     def get_player(self):
         return self._player
+
+    def get_tilemap(self):
+        return self._map
 		
 game = Game()
 game.run()
