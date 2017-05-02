@@ -15,7 +15,6 @@ BLINK_TIME = 100
 
 class Character(object):
     _facing = 0
-    speed = 4
 
     _update_time = 0
     

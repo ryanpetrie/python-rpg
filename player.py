@@ -9,6 +9,7 @@ class Player(Character):
 
     _attack_event = TimedEvent(500)
     _attack_rect = pygame.Rect(0, 0, 0, 0)
+    speed = 4
 
     def draw(self, screen, tilemap):
         Character.draw(self, screen, tilemap)
@@ -57,3 +58,22 @@ class Player(Character):
         if self.is_in_attack():
             return False
         return Character.move(self, tilemap, rel_x, rel_y)
+
+    def handle_input(self, keys):
+        x, y = 0, 0
+        tilemap = self._game.get_tilemap()
+        if keys[pygame.K_LEFT]:
+            x -= self.speed
+        if keys[pygame.K_RIGHT]:
+            x += self.speed
+        if keys[pygame.K_UP]:
+            y -= self.speed
+        if keys[pygame.K_DOWN]:
+            y += self.speed
+        if keys[pygame.K_SPACE]:
+            self.attack(self._game.enemies)
+        if self.move(tilemap, x, y):
+            rect = self.get_rect()
+            tilemap.set_center(rect.centerx, rect.centery)
+        
+        
