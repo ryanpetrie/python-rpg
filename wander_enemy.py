@@ -1,6 +1,9 @@
 from enemy import *
 
 class WanderEnemy(Enemy):
+    _steps_left = 0
+    _direction = -1
+
     def update(self, time):
         Enemy.update(self, time)
         if self._steps_left <= 0:

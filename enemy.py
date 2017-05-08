@@ -2,9 +2,6 @@ from character import *
 from random import randint
 
 class Enemy(Character):
-    _steps_left = 0
-    _direction = -1
-
     def update(self, time):
         Character.update(self, time)
 
