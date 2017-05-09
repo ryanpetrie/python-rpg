@@ -54,4 +54,12 @@
 12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,74,74,12,12,12,12
 </data>
  </layer>
+ <objectgroup name="Tiggers">
+  <object name="LawnTrigger" x="288" y="144" width="32" height="32">
+   <properties>
+    <property name="text" value="Get off my lawn!!"/>
+    <property name="trigger_type" value="popup"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>

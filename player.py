@@ -59,7 +59,7 @@ class Player(Character):
             return False
         return Character.move(self, tilemap, rel_x, rel_y)
 
-    def handle_input(self, keys):
+    def handle_input(self, keys, released):
         x, y = 0, 0
         tilemap = self._game.get_tilemap()
         if keys[pygame.K_LEFT]:
@@ -70,7 +70,7 @@ class Player(Character):
             y -= self.speed
         if keys[pygame.K_DOWN]:
             y += self.speed
-        if keys[pygame.K_SPACE]:
+        if released[pygame.K_SPACE]:
             self.attack(self._game.enemies)
         if self.move(tilemap, x, y):
             rect = self.get_rect()

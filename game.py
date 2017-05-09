@@ -16,7 +16,7 @@ class Game(object):
     def __init__(self):
         pygame.init()
         self.enemies = []
-        self.paused = False
+        self.paused_count = 0
         self.drawables = []
 
         self._screen = pygame.display.set_mode((self._width*2, self._height*2))
@@ -25,6 +25,7 @@ class Game(object):
         self._player = Player('character.tmx', self)
         self._clock = pygame.time.Clock()
         self._gui = Gooey('gui.tmx')
+        self._last_keys = None
 
         self.input_stack = [self._player]
 
@@ -52,7 +53,7 @@ class Game(object):
         self._handle_input()
 
         # Update stuff.
-        if not self.paused:
+        if self.paused_count == 0:
             self._map.update(frame_time)
             self._player.update(frame_time)
             for enemy in self.enemies:
@@ -70,11 +71,23 @@ class Game(object):
         pygame.display.flip()
 
     def _handle_input(self):
+        # Compute the key state.
         keys = pygame.key.get_pressed()
+        if self._last_keys:
+            released = []
+            for last_frame, this_frame in zip(self._last_keys, keys):
+                released.append(last_frame and not this_frame)
+        else:
+            released = [False for key in keys]
+
+        # Handle input.
         top = self.input_stack[-1]
-        top.handle_input(keys)
-        if keys[pygame.K_p]:
+        top.handle_input(keys, released)
+        if released[pygame.K_p]:
             popup = Popup(self, self._gui)
+
+        # Store the key state for next frame.
+        self._last_keys = keys
 
 
     def _shutdown(self):

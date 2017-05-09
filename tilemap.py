@@ -19,7 +19,7 @@ class TileMap(object):
 
     def _create_special_objects(self, game):
         # Loop through every tile to see if we should create something.
-        for layer_number in xrange(len(self._map.layers)):
+        for layer_number in self._map.visible_tile_layers:
             # Get the layer object so we can use its properties.
             layer = self._map.layers[layer_number]
             for y in xrange(layer.height):
@@ -49,6 +49,8 @@ class TileMap(object):
     def draw(self, screen):
         # Draw each tile.
         for layer in self._map.layers:
+            if type(layer) != pytmx.TiledTileLayer:
+                continue
             for x, y, image in layer.tiles():
                 left = x * self._tilex - self._screen_rect.x
                 top = y * self._tiley - self._screen_rect.y
@@ -68,7 +70,7 @@ class TileMap(object):
 
         for y in xrange(firsty, lasty + 1):
             for x in xrange(firstx, lastx + 1):
-                for layer in xrange(len(self._map.layers)):
+                for layer in self._map.visible_tile_layers:
                     # Does this tile have collision?
                     props = self._map.get_tile_properties(x, y, layer)
                     if props and "collision" in props and props["collision"]:
