@@ -5,7 +5,8 @@ from character import *
 from enemy import *
 from player import *
 from gui import *
-from popup import *
+#from popup import *
+from hud import *
 
 class Game(object):
     _width = 320
@@ -26,6 +27,8 @@ class Game(object):
         self._clock = pygame.time.Clock()
         self._gui = Gooey('gui.tmx')
         self._last_keys = None
+        self._hud = HUD(self._gui, self)
+        self.drawables.append(self._hud)
 
         self.input_stack = [self._player]
 
@@ -84,7 +87,8 @@ class Game(object):
         top = self.input_stack[-1]
         top.handle_input(keys, released)
         if released[pygame.K_p]:
-            popup = Popup(self, self._gui)
+            #popup = Popup(self, self._gui)
+            pass
 
         # Store the key state for next frame.
         self._last_keys = keys

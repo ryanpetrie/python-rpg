@@ -19,6 +19,7 @@ class ChaserEnemy(Enemy):
         # See if we're close enough to chase.
         length = enemy_to_player.length()
         if length <= self.attack_distance and length > 0.1:
+            self.attack_player()
             # Turn our time into seconds.
             time = time / 1000.0
             # Determine how far we're stepping.

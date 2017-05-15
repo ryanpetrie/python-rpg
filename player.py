@@ -10,6 +10,8 @@ class Player(Character):
     _attack_event = TimedEvent(500)
     _attack_rect = pygame.Rect(0, 0, 0, 0)
     speed = 4
+    MAX_HEALTH = 10
+    health = MAX_HEALTH
 
     def draw(self, screen, tilemap):
         Character.draw(self, screen, tilemap)
@@ -51,7 +53,7 @@ class Player(Character):
     def hit(self):
         if self.is_invul():
             return
-        print "I'm the player don't hit me"
+        self.health -= 1
         self.go_invul()        
 
     def move(self, tilemap, rel_x, rel_y):
