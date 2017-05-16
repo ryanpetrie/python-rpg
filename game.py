@@ -87,7 +87,7 @@ class Game(object):
         top = self.input_stack[-1]
         top.handle_input(keys, released)
         if released[pygame.K_p]:
-            #popup = Popup(self, self._gui)
+            popup = Popup(self)
             pass
 
         # Store the key state for next frame.
@@ -99,6 +99,9 @@ class Game(object):
 	
     def get_tilemap(self):
         return self._map
+
+    def get_gui(self):
+        return self._gui
 		
 game = Game()
 game.run()

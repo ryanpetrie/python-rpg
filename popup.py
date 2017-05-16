@@ -2,9 +2,9 @@ import pygame
 from gui import *
 
 class Popup(object):
-    def __init__(self, game, gui):
+    def __init__(self, game):
         self._game = game
-        self._gui = gui
+        self._gui = game.get_gui()  # so messy
         game.input_stack.append(self)
         game.paused_count += 1
         game.drawables.append(self)

@@ -1,6 +1,7 @@
 import pytmx, pygame
 from pytmx.util_pygame import load_pygame
 from spawner import *
+from popup_trigger import *
 
 class TileMap(object):
     def __init__(self, filename, screenwidth, screenheight, game):
@@ -18,7 +19,7 @@ class TileMap(object):
         self._create_special_objects(game)
 
     def _create_special_objects(self, game):
-        # Loop through every tile to see if we should create something.
+        # Loop through every visible tile to see if we should create something.
         for layer_number in self._map.visible_tile_layers:
             # Get the layer object so we can use its properties.
             layer = self._map.layers[layer_number]
@@ -30,6 +31,18 @@ class TileMap(object):
                         rect = pygame.Rect(x * self._tilex, y * self._tiley, self._tilex, self._tiley)
                         spawner = Spawner(rect, game)
                         self._objects.append(spawner)
+        # Loop through object layers.
+        for layer in self._map.layers:
+            if type(layer) != pytmx.TiledObjectGroup:
+                continue
+            for obj in layer:
+                if "trigger_type" in obj.properties:
+                    trigger_type = obj.properties["trigger_type"]
+                    if trigger_type == "popup":
+                        trigger = PopupTrigger(obj, game)
+                        self._objects.append(trigger)
+                    else:
+                        print "Unknown trigger type"
 
 
     def get_offset(self):
