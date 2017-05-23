@@ -5,7 +5,6 @@ from character import *
 from enemy import *
 from player import *
 from gui import *
-#from popup import *
 from hud import *
 
 class Game(object):
@@ -22,8 +21,9 @@ class Game(object):
 
         self._screen = pygame.display.set_mode((self._width*2, self._height*2))
         self._canvas = pygame.Surface((self._width, self._height), 0, self._screen)
-        self._map = TileMap('test.tmx', self._width, self._height, self)
         self._player = Player('character.tmx', self)
+        self._map = TileMap('test.tmx', self._width, self._height, self)
+        self._player.set_position(self._map.spawn_x, self._map.spawn_y)
         self._clock = pygame.time.Clock()
         self._gui = Gooey('gui.tmx')
         self._last_keys = None
@@ -86,9 +86,6 @@ class Game(object):
         # Handle input.
         top = self.input_stack[-1]
         top.handle_input(keys, released)
-        if released[pygame.K_p]:
-            popup = Popup(self)
-            pass
 
         # Store the key state for next frame.
         self._last_keys = keys
@@ -102,6 +99,10 @@ class Game(object):
 
     def get_gui(self):
         return self._gui
+
+    def move_to_map(self, map_name):
+        self._map = TileMap(map_name, self._width, self._height, self)
+        self._player.set_position(self._map.spawn_x, self._map.spawn_y)
 		
 game = Game()
 game.run()
