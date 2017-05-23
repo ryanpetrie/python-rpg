@@ -73,7 +73,7 @@ class Player(Character):
         if keys[pygame.K_DOWN]:
             y += self.speed
         if released[pygame.K_SPACE]:
-            self.attack(self._game.enemies)
+            self.attack(self._game.get_tilemap().enemies)
         if self.move(tilemap, x, y):
             rect = self.get_rect()
             tilemap.set_center(rect.centerx, rect.centery)

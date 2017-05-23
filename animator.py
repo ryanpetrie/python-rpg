@@ -43,6 +43,9 @@ def get_animated_tile_image(tilemap, x, y, layer, animation_time = 0):
     if not props or 'frames' not in props or len(props['frames']) < 2:
         return tilemap.get_tile_image(x, y, layer)
 
+    if 'current_frame' not in props:
+        reset_animation(props)
+
     # Animate if requested.
     if animation_time > 0:
         animate_tile_properties(props, animation_time)

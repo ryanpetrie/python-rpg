@@ -2,7 +2,6 @@
 import pygame
 from tilemap import *
 from character import *
-from enemy import *
 from player import *
 from gui import *
 from hud import *
@@ -15,7 +14,6 @@ class Game(object):
 
     def __init__(self):
         pygame.init()
-        self.enemies = []
         self.paused_count = 0
         self.drawables = []
 
@@ -59,15 +57,11 @@ class Game(object):
         if self.paused_count == 0:
             self._map.update(frame_time)
             self._player.update(frame_time)
-            for enemy in self.enemies:
-                enemy.update(frame_time)
 
         # Draw the screen.
         self._canvas.fill((255, 255, 255))
         self._map.draw(self._canvas)
         self._player.draw(self._canvas, self._map)
-        for enemy in self.enemies:
-            enemy.draw(self._canvas, self._map)
         for thingy in self.drawables:
             thingy.draw(self._canvas)
         pygame.transform.scale2x(self._canvas, self._screen)
@@ -89,7 +83,6 @@ class Game(object):
 
         # Store the key state for next frame.
         self._last_keys = keys
-
 
     def _shutdown(self):
         pygame.display.quit()

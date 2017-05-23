@@ -3,7 +3,6 @@ from wander_enemy import *
 from chaser_enemy import *
 
 class Spawner(object):
-
     def __init__(self, rect, game):
         self._rect = rect
         self._game = game
@@ -22,5 +21,5 @@ class Spawner(object):
         new_enemy.set_position(self._rect.center[0], self._rect.center[1])
 
         # Add it to the enemy list.
-        self._game.enemies.append(new_enemy)
+        self._game.get_tilemap().enemies.append(new_enemy)
 

@@ -22,6 +22,8 @@ class TileMap(object):
         self._objects = []
         self._create_special_objects(game)
 
+        self.enemies = []
+
     def _create_special_objects(self, game):
         # Loop through every visible tile to see if we should create something.
         for layer_number in self._map.visible_tile_layers:
@@ -80,6 +82,10 @@ class TileMap(object):
                 top = y * self._tiley - self._screen_rect.y
                 myrect = pygame.Rect(left, top, self._tilex, self._tiley)
                 screen.blit(image, myrect)
+        # Draw the enemies.
+        for enemy in self.enemies:
+            enemy.draw(screen, self)
+
 
     def collides(self, rect):
         if not self._world_rect.contains(rect):
@@ -87,10 +93,10 @@ class TileMap(object):
             return True
         
         # Determine the tile bounds of the rect.
-        firstx = rect.left / self._tilex
-        firsty = rect.top / self._tiley
-        lastx = rect.right / self._tilex
-        lasty = rect.bottom / self._tiley
+        firstx = max(rect.left / self._tilex, 0)
+        firsty = max(rect.top / self._tiley, 0)
+        lastx = min(rect.right / self._tilex, self._map.width - 1)
+        lasty = min(rect.bottom / self._tiley, self._map.height - 1)
 
         for y in xrange(firsty, lasty + 1):
             for x in xrange(firstx, lastx + 1):
@@ -104,5 +110,7 @@ class TileMap(object):
         return False
 
     def update(self, time):
+        for enemy in self.enemies:
+            enemy.update(time)
         for obj in self._objects:
             obj.update(time)
